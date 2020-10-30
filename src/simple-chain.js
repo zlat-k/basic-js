@@ -1,26 +1,57 @@
 const CustomError = require("../extensions/custom-error");
 
 const chainMaker = {
-  getLength() {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
-  },
-  addLink(value) {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
-  },
-  removeLink(position) {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
-  },
-  reverseChain() {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
-  },
-  finishChain() {
-    throw new CustomError('Not implemented');
-    // remove line with error and write your code here
-  }
+    chain: [],
+    getLength() {
+        return this.chain.length
+    },
+    addLink(value) {
+        this.chain.push(value);
+        return chainMaker;
+    },
+    removeLink(position) {
+        if(position > this.chain.length){
+            this.chain = []
+            throw 'Error';
+
+        }
+        if (!position instanceof Number) {
+            this.chain = []
+            throw 'Error';
+
+        }
+
+        if (position === 0) {
+            this.chain = []
+            throw 'Error';
+
+        }
+        this.chain.splice(position - 1, 1)
+        return chainMaker
+    },
+    reverseChain() {
+        this.chain = this.chain.reverse();
+        return chainMaker
+
+    },
+    finishChain() {
+        if (this.chain.length === 0) {
+            throw 'Error';
+        }
+        if (this.chain.length === 1 || this.chain.length < 2) {
+            this.chain[0] = '( ' + this.chain[0] + ' )'
+        }
+        if (this.chain.length > 1) {
+            this.chain[0] = '( ' + this.chain[0] + ' )'
+            for (let i = 1; i < this.chain.length; i++) {
+                this.chain[i] = '~~( ' + this.chain[i] + ' )'
+            }
+
+        }
+        let res = this.chain.join('')
+        this.chain = []
+        return res
+    }
 };
 
 module.exports = chainMaker;
